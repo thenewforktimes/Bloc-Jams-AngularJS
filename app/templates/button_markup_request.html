@@ -1,0 +1,28 @@
+<!--
+
+The player bar also has play and pause buttons that should show/hide under certain conditions.
+Determine what you should show and when you should show it.
+Create a markdown table (like the one presented in this checkpoint) to hold this information and send it to your mentor.
+
+So my initial thought is that we want the play and pause buttons to show when nothing is playing,
+and then we want to hide the appropriate button once we hit play or pause, i.e. if a song is playing,
+then we hide the play button, once we stop the song, unhide the play button. Once you hit the play
+button again, hide it. Now for the hard part...
+
+-->
+
+<section class='player-bar-buttons'>
+  <div class="buttons">
+
+    <button class="playButton" ng-click="play" ng-init="!playing && !paused">Play</button>
+      <span>
+        {{play}}
+      </span>
+
+    <button class="pauseButton" ng-click="pause" ng-init="!playing">Play</button>
+      <span>
+        {{pause}}
+      </span>
+
+  </div>
+</section>
