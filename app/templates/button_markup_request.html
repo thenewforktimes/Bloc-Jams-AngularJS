@@ -11,18 +11,10 @@ button again, hide it. Now for the hard part...
 
 -->
 
-<section class='player-bar-buttons'>
-  <div class="buttons">
+<td class="play-pause-buttons">
+     <button ng-show="!playing && !paused">Play</span>
+     <a class="play-button"><span class="ion-play"></span></a>
 
-    <button class="playButton" ng-click="play" ng-init="!playing && !paused">Play</button>
-      <span>
-        {{play}}
-      </span>
-
-    <button class="pauseButton" ng-click="pause" ng-init="!playing">Play</button>
-      <span>
-        {{pause}}
-      </span>
-
-  </div>
-</section>
+     <button ng-show="!paused">Pause</span>
+     <a class="pause-button"><span class="ion-pause"></span></a>
+ </td>
