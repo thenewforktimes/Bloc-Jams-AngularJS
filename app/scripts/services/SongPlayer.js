@@ -40,7 +40,7 @@
     var getSongIndex = function(song) {
       return currentAlbum.songs.indexOf(song);
     };
-
+    //I don't fully understand why this has to be public here, and what benefits setting the data state to null are.
     SongPlayer.currentSong = null;
 
     //@desc creates .play method for the SongPlayer obj??
