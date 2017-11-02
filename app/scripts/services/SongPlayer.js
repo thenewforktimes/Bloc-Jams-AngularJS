@@ -1,104 +1,97 @@
 (function() {
   function SongPlayer(Fixtures) {
+    //@desc creates local SongPlayer state to an empty obj, useful for method chaining and prototyping?
     var SongPlayer = {};
-    /*
-    * @ desc gets and stores album
-    * @type {Object}
-    */
+
     var currentAlbum = Fixtures.getAlbum();
-    /*
-    * @desc Buzz object audio file
-    * @type {Object}
-    */
+
+    //@desc unsure why we need to store this var and set it to null? would we ever want to be able to set it to anything else? here?
     var currentBuzzObject = null;
-    /*
-    * @function setSong
-    * @desc Stops currently playing song and loads new audio file as currentBuzzObject
-    * @param {Object} song
-    */
-    var setSong = function(song){
-      if(currentBuzzObject){
-        currentBuzzObject.stop();
-        stopSong(song);
+
+    //@desc sets song data via reference check on the currentBuzzObject
+    //@desc type: {obj}
+    var setSong = function(song) {
+      if (currentBuzzObject) {
+        stopSong();
       }
       currentBuzzObject = new buzz.sound(song.audioUrl, {
         formats: ['mp3'],
         preload: true
       });
-
       SongPlayer.currentSong = song;
     };
-    var playSong = function(song){
-      if(currentBuzzObject){
-        currentBuzzObject.play(song);
-        SongPlayer.currentSong.playing = true;
-      }
+
+    // sets song.playing method to true on function execution
+    var playSong = function(song) {
+      currentBuzzObject.play();
+      song.playing = true;
     };
-    var stopSong = function(song){
-      if(currentBuzzObject){
-        currentBuzzObject.stop(song);
-        song.playing = null;
-      }
+
+    var pauseSong = function(song) {
+      currentBuzzObject.pause();
+      song.playing = false;
+    };
+
+    var stopSong = function(song) {
+      currentBuzzObject.stop();
+      SongPlayer.currentSong.playing = null;
+    };
+
+    var getSongIndex = function(song) {
+      return currentAlbum.songs.indexOf(song);
     };
 
     SongPlayer.currentSong = null;
 
+    //@desc creates .play method for the SongPlayer obj??
+    //first checks if song = song || SongPlayer.currentSong
+    //if neither conditions check true, trigger callbacks to setSong and playSong
     SongPlayer.play = function(song) {
       song = song || SongPlayer.currentSong;
       if (SongPlayer.currentSong !== song) {
         setSong(song);
-        currentBuzzObject.play();
-        SongPlayer.currentSong.playing = true;
-      }
+        playSong(song);
+      } else if (SongPlayer.currentSong === song) {
+          if (currentBuzzObject.isPaused()) {
+          playSong(song);
+          }
+        }
     };
     SongPlayer.pause = function(song) {
       song = song || SongPlayer.currentSong;
-      currentBuzzObject.pause();
-      song.playing = false;
+      pauseSong(song);
     };
-    /*
-    * @desc public method to check index, if less than zero set to null;
-    * @type {obj} && [arr]
-    */
+
     SongPlayer.previous = function() {
       var currentSongIndex = getSongIndex(SongPlayer.currentSong);
       currentSongIndex--;
+
       if (currentSongIndex < 0) {
-        currentBuzzObject.stop();
-        stopSong(song);
+        stopSong();
       } else {
         var song = currentAlbum.songs[currentSongIndex];
         setSong(song);
         playSong(song);
       }
     };
-    /*
-    * @desc public method to check index, if greater than zero set to null;
-    * @type {obj} && [arr]
-    */
+
     SongPlayer.next = function() {
       var currentSongIndex = getSongIndex(SongPlayer.currentSong);
       currentSongIndex++;
-      if (currentSongIndex > 5) {
-        currentBuzzObject.stop();
-        stopSong(song);
+
+      if (currentSongIndex > Object.keys(currentAlbum).length) {
+        stopSong();
       } else {
         var song = currentAlbum.songs[currentSongIndex];
         setSong(song);
         playSong(song);
       }
     };
-    /*
-    * @desc iterates over arr and gets index from song object
-    * @type {object}
-    */
-    var getSongIndex = function(song) {
-      return currentAlbum.songs.indexOf(song);
-    };
+
     return SongPlayer;
   };
 
   angular
   .module('blocJams')
-  .factory('SongPlayer', ['Fixtures', SongPlayer]);
+  .factory('SongPlayer', SongPlayer);
 })();
