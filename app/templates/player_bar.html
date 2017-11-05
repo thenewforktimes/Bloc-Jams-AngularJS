@@ -1,4 +1,4 @@
- <section class="player-bar" ng-controller="PlayerBarCtrl as playerBar">
+<section class="player-bar" ng-controller="PlayerBarCtrl as playerBar">
   <div class="container">
     <div class="control-group main-controls">
       <a class="previous" ng-click="playerBar.songPlayer.previous()">
@@ -10,8 +10,8 @@
         ng-click="playerBar.songPlayer.play()">
       </span>
       <span class="ion-pause"
-        ng-show="playerBar.songPlayer.currentSong.playing"
-        ng-click="playerBar.songPlayer.pause()">
+      ng-show="playerBar.songPlayer.currentSong.playing"
+      ng-click="playerBar.songPlayer.pause()">
     </span>
   </a>
   <a class="next" ng-click="playerBar.songPlayer.next()">
@@ -24,8 +24,8 @@
   <h3 class="artist-name">{{ album.albumData.artist }} </h3>
   <div class="seek-control">
     <seek-bar value="{{ playerBar.songPlayer.currentTime }}" max="{{ playerBar.songPlayer.currentSong.duration }}" on-change="playerBar.songPlayer.setCurrentTime(value)"></seek-bar>
-    <div class="current-time">{{ playerBar.songPlayer.currentTime }}</div>
-    <div class="total-time">{{ playerBar.songPlayer.currentSong.duration }}</div>
+    <div class="current-time">{{ playerBar.songPlayer.currentTime | timecode }}</div>
+    <div class="total-time">{{ playerBar.songPlayer.currentSong.duration | timecode }}</div>
   </div>
 </div>
 <div class="control-group volume">
